@@ -22,11 +22,14 @@ import math
 import unittest
 import numpy as np
 import requests as r
+import copy
 
 def exercise01():
     # Create a list called animals containing the following animals: cat, dog, crouching tiger, hidden dragon, manta ray
 
     # ------ Place code below here \/ \/ \/ ------
+
+    animals = ['cat','dog','crouching tiger','hidden dragon','manta ray']
 
 
     # ------ Place code above here /\ /\ /\ ------
@@ -38,7 +41,11 @@ def exercise02():
     # Repeat exercise 1 and loop through and print each item in the animal list by iterating through an index number and using range(). Set the variable len_animals to the length of the animal list.
 
     # ------ Place code below here \/ \/ \/ ------
+    animals = ['cat','dog','crouching tiger','hidden dragon','manta ray']
+    len_animals = len(animals)
 
+    for x in range(len_animals):
+        print (animals[x])
 
     # ------ Place code above here /\ /\ /\ ------
 
@@ -54,7 +61,8 @@ def exercise03():
     the_fifth_element = -999
 
     # ------ Place code below here \/ \/ \/ ------
-
+    countdown.sort(reverse=True)
+    the_fifth_element = countdown[4]
 
     # ------ Place code above here /\ /\ /\ ------
 
@@ -77,6 +85,16 @@ def exercise04(more_temperatures, iot_sensor_points, a, b, c, d, e):
     copy_of_samples = []
 
     # ------ Place code below here \/ \/ \/ ------
+    temperatures.extend(more_temperatures) #1
+    temperatures.extend(iot_sensor_points.values()) #2
+    temperatures += [a,b,c,d,e] #3
+    temperatures.sort(reverse=True) #4
+    samples = temperatures[4::5] #5
+    copy_of_samples = copy.copy(samples) #6
+    samples.sort() #7
+    print(copy_of_samples)
+    print(samples)
+
 
 
 
@@ -89,8 +107,10 @@ def exercise05(n):
     # This function will find n factorial using recursion (calling itself) and return the solution. For example exercise05(5) will return 120. No Python functions are to be used.
 
     # ------ Place code below here \/ \/ \/ ------
-
-    pass # Remove this line
+    if n == 1:
+       return 1
+    else:
+        return n * exercise05(n-1)
 
     # ------ Place code above here /\ /\ /\ ------
 
@@ -99,6 +119,9 @@ def exercise06(n):
      # This function will receive an arbitrary list of numbers of arbitrary size and find the average of those numbers. The size of the list may vary. Find the method that requires the  least amount of code. Return back the length, sum of list and average of list
 
     # ------ Place code below here \/ \/ \/ ------
+    length_n = len(n)
+    sum_n = sum(n)
+    average_n = np.average(n)
 
 
     # ------ Place code above here /\ /\ /\ ------
@@ -109,6 +132,11 @@ def exercise07(n):
     # This function looks for duplicates in list n. If there is a duplicate True is returned. If there are no duplicates False is returned.
 
     # ------ Place code below here \/ \/ \/ ------
+    new_list = set(n)
+    if len(new_list) == len(n):
+        return False
+    else:
+        return True
 
 
     # ------ Place code above here /\ /\ /\ ------
@@ -118,6 +146,8 @@ def exercise07(n):
 
 def exercise08(s):
     # This function receives a string. The string should be casted to an int and then a float and returns each separately
+    int_s = int(s)
+    float_s = float(int_s)
 
     return int_s, float_s
 
@@ -133,6 +163,11 @@ def exercise09():
     
     # ------ Place code below here \/ \/ \/ ------
     
+    for x in range(11):
+        request = r.get(url=url)
+        jsonResponse = request.json()
+        dogs.append(str(jsonResponse['url']))
+    print (dogs)
 
 
     # ------ Place code above here /\ /\ /\ ------
@@ -143,9 +178,14 @@ def exercise10(sentence):
 
     # Exercise10 receives an arbitrary string. Return the sentence backwards with the cases inverted and spaces an underscore _, i.e. HelLo returns OlLEh
     reversed = ''
+    reversed_copy = sentence[::-1]
 
     # ------ Place code below here \/ \/ \/ ------
-    
+    for char in reversed_copy:
+        if char.isalpha():
+            reversed += char.swapcase()
+        elif char.isspace():
+            reversed += '_'
 
 
     # ------ Place code above here /\ /\ /\ ------
