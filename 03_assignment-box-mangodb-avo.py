@@ -287,7 +287,15 @@ def exercise03():
     '''
 
     # ------ Place code below here \/ \/ \/ ------
-
+    filename = 'avocado.csv'
+    fields = []
+    rows = []
+    with open(filename, 'r') as csv_file:
+        reader = csv.reader(csv_file)
+        fields = next(reader)
+        for row in reader:
+            rows.append(row)
+            print(row)
 
     # ------ Place code above here /\ /\ /\ ------
 
