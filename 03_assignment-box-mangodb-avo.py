@@ -79,7 +79,69 @@ class Box():
 
 # MangoDB class declaration below here
 
-    
+class MongoDB():
+    def __init__(self):
+        self.collections = {}
+        self.collections['default'] = {
+                'version': 1.0,
+                'db': 'mangodb',
+                'uuid': uuid.uuid4()
+            }
+
+    def display_all_collections(self):
+        for name, collection in self.collections.items():
+            print(f'collection: {name}')
+            for key, item in collection.items():
+                print(f'{key}: {item}')
+
+    def add_collection(self, collection_name):
+        self.collections[collection_name] = {}
+
+    def update_collection(self, collection_name, updates):
+        self.collections.update(updates)
+
+    def remove_collection(self, collection_name):
+        self.collections.pop(collection_name)
+
+    def list_collections(self):
+        print(list(self.collections.keys()))
+
+    def get_collection_size(self, collection_name):
+        return len(self.collections.collection_name)
+
+    def to_json(self, collection_name):
+        return json.dumps(self.collections.collection_name, indent = 4)
+
+    def wipe(self):
+        default = self.collections['default']
+        self.collections.clear()
+        self.collections['default'] = default
+
+    def get_collections(self):
+        return list(self.collections.keys())
+
+'''
+    The above is a representation of a dictionary of dictionaries. Default and temperatures are dictionaries or collections. The default collection has a series of key/value pairs that make up the collection. The MangoDB class should create only the default collection, as shown, on instantiation including a randomly generated uuid using the uuid4() method and have the following methods:
+        - display_all_collections() which iterates through every collection and prints to screen each collection names and the collection's content underneath and may look something like:
+            collection: default
+                version 1.0
+                db mangodb
+                uuid 739bd6e8-c458-402d-9f2b-7012594cd741
+            collection: temperatures
+                1 50
+                2 100 
+        - add_collection(collection_name) allows the caller to add a new collection by providing a name. The collection will be empty but will have a name.
+        - update_collection(collection_name,updates) allows the caller to insert new items into a collection i.e. 
+                db = MangoDB()
+                db.add_collection('temperatures')
+                db.update_collection('temperatures',{1:50,2:100})
+        - remove_collection() allows caller to delete a specific collection by name and its associated data
+        - list_collections() displays a list of all the collections
+        - get_collection_size(collection_name) finds the number of key/value pairs in a given collection
+        - to_json(collection_name) that converts the collection to a JSON string
+        - wipe() that cleans out the db and resets it with just a default collection
+        - get_collection_names() that returns a list of collection names 
+'''
 
 # ------ Create your classes here /\ /\ /\ ------
 
@@ -171,27 +233,6 @@ def exercise02():
                 3: 120
             }
         }
-    
-    The above is a representation of a dictionary of dictionaries. Default and temperatures are dictionaries or collections. The default collection has a series of key/value pairs that make up the collection. The MangoDB class should create only the default collection, as shown, on instantiation including a randomly generated uuid using the uuid4() method and have the following methods:
-        - display_all_collections() which iterates through every collection and prints to screen each collection names and the collection's content underneath and may look something like:
-            collection: default
-                version 1.0
-                db mangodb
-                uuid 739bd6e8-c458-402d-9f2b-7012594cd741
-            collection: temperatures
-                1 50
-                2 100 
-        - add_collection(collection_name) allows the caller to add a new collection by providing a name. The collection will be empty but will have a name.
-        - update_collection(collection_name,updates) allows the caller to insert new items into a collection i.e. 
-                db = MangoDB()
-                db.add_collection('temperatures')
-                db.update_collection('temperatures',{1:50,2:100})
-        - remove_collection() allows caller to delete a specific collection by name and its associated data
-        - list_collections() displays a list of all the collections
-        - get_collection_size(collection_name) finds the number of key/value pairs in a given collection
-        - to_json(collection_name) that converts the collection to a JSON string
-        - wipe() that cleans out the db and resets it with just a default collection
-        - get_collection_names() that returns a list of collection names
 
 
         Make sure to never expose the underlying data structures
@@ -211,6 +252,26 @@ def exercise02():
     test_scores = [99,89,88,75,66,92,75,94,88,87,88,68,52]
 
     # ------ Place code below here \/ \/ \/ ------
+    db = MongoDB()
+
+    db.add_collection('testscores')
+
+    test_dict = {}
+    for num in test_scores.length:
+        test_dict[num+1] = test_scores[num]
+
+    db.update_collection('testscores', test_dict)
+
+    db.get_collection_size('testscores')
+
+    db.display_all_collections()
+
+    print(db.collections.default['uuid'])
+
+    db.wipe()
+
+    print(db.collections.default['uuid'])
+
 
     # ------ Place code above here /\ /\ /\ ------
 
