@@ -19,7 +19,63 @@ import csv, json, math, pandas as pd, requests, unittest, uuid
 # ------ Create your classes here \/ \/ \/ ------
 
 # Box class declaration below here
-    
+class Box():
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+
+# - A method called render() that prints out to the screen a box made with asterisks of length and width dimensions
+
+    def render(self):
+        for y in self.length:
+            for x in self.width:
+                print('*')
+
+    # - A method called invert() that switches length and width with each other
+    def invert(self):
+        w = self.width
+        self.width = self.length
+        self.length = w
+        return self
+
+    # - Methods get_area() and get_perimeter() that return appropriate geometric calculations
+
+    def get_area(self):
+        return self.length * self.width
+
+    def get_perimeter(self):
+        return self.length * 2 + self.width * 2
+
+    # - A method called double() that doubles the size of the box. Hint: Pay attention to return value here
+
+    def double(self):
+        self.length = self.length * 2
+        self.width = self.width * 2
+        return self
+    # - Implement __eq__ so that two boxes can be compared using ==. Two boxes are equal if their respective lengths and widths are identical.
+    def __eq__(self, other):
+        return self.width == other.width & self.length == other.length
+    # - A method print_dim that prints to screen the length and width details of the box
+
+    def print_dim(self):
+        print(f'Length: {self.length} | Width: {self.width}')
+
+    # - A method get_dim that returns a tuple containing the length and width of the box
+    def get_dim(self):
+        return (self.length, self.width)
+
+    # - A method combine() that takes another box as an argument and increases the length and width by the dimensions of the box passed in
+
+    def combine(self, other):
+        self.length += other.length
+        self.width += other.width
+        return self
+
+    # - A method get_hypot() that finds the length of the diagonal that cuts throught the middle
+    def get_hypot(self):
+        hypot = math.sqrt(self.length ** 2 + self.width ** 2)
+        return hypot
+
 
 # MangoDB class declaration below here
 
@@ -29,9 +85,8 @@ import csv, json, math, pandas as pd, requests, unittest, uuid
 
 
 
-
-
 def exercise01():
+    
 
     '''
         Create an immutable class Box that has private attributes length and width that takes values for length and width
@@ -67,10 +122,32 @@ def exercise01():
 '''
 
     # ------ Place code below here \/ \/ \/ ------
+    # box2, box3, box4, box5, box6
 
+    box1 = Box(5,10)
+    box2 = Box(3,4)
+    box3 = Box(5,10)
 
+    box1.print_dim()
+    box2.print_dim()
+    box3.print_dim()
 
-    return box1, box2, box3, box4, box5, box6
+    print(box1 == box2)
+    print(box1 == box3)
+
+    box4 = box1.combine(box3)
+
+    box5 = box2.double()
+
+    box6 = box4.combine(box5)
+
+    for i in box2.get_dim():
+        print(i)
+
+    box2.get_hypot()
+    
+    return box1
+    
 
     # ------ Place code above here /\ /\ /\ ------
 
