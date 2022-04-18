@@ -15,6 +15,7 @@ Assignment #3
 
 '''
 import csv, json, math, pandas as pd, requests, unittest, uuid
+from re import L
 
 # ------ Create your classes here \/ \/ \/ ------
 
@@ -33,10 +34,8 @@ class Box():
 
     # - A method called invert() that switches length and width with each other
     def invert(self):
-        w = self.width
-        self.width = self.length
-        self.length = w
-        return self
+        output = Box(self.width, self.length)
+        return output
 
     # - Methods get_area() and get_perimeter() that return appropriate geometric calculations
 
@@ -49,16 +48,23 @@ class Box():
     # - A method called double() that doubles the size of the box. Hint: Pay attention to return value here
 
     def double(self):
-        self.length = self.length * 2
-        self.width = self.width * 2
-        return self
+        l = self.length * 2
+        w = self.width * 2
+        output = Box(l, w)
+        return output
     # - Implement __eq__ so that two boxes can be compared using ==. Two boxes are equal if their respective lengths and widths are identical.
     def __eq__(self, other):
-        return self.width == other.width & self.length == other.length
+        return self.width == other.width and self.length == other.length
     # - A method print_dim that prints to screen the length and width details of the box
 
     def print_dim(self):
         print(f'Length: {self.length} | Width: {self.width}')
+
+    def get_length(self):
+        return self.length
+    
+    def get_width(self):
+        return self.width
 
     # - A method get_dim that returns a tuple containing the length and width of the box
     def get_dim(self):
@@ -67,9 +73,10 @@ class Box():
     # - A method combine() that takes another box as an argument and increases the length and width by the dimensions of the box passed in
 
     def combine(self, other):
-        self.length += other.length
-        self.width += other.width
-        return self
+        l = other.length + self.length
+        w = other.width + self.width
+        output = Box(l, w)
+        return output
 
     # - A method get_hypot() that finds the length of the diagonal that cuts throught the middle
     def get_hypot(self):
@@ -90,15 +97,13 @@ class MongoDB():
 
     def display_all_collections(self):
         for name, collection in self.collections.items():
-            print(f'collection: {name}')
-            for key, item in collection.items():
-                print(f'{key}: {item}')
+            print(f'collection: {name} | {collection}')
 
     def add_collection(self, collection_name):
         self.collections[collection_name] = {}
 
     def update_collection(self, collection_name, updates):
-        self.collections.update(updates)
+        self.collections[collection_name].update(updates)
 
     def remove_collection(self, collection_name):
         self.collections.pop(collection_name)
@@ -107,17 +112,17 @@ class MongoDB():
         print(list(self.collections.keys()))
 
     def get_collection_size(self, collection_name):
-        return len(self.collections.collection_name)
+        return len(self.collections[collection_name])
 
     def to_json(self, collection_name):
-        return json.dumps(self.collections.collection_name, indent = 4)
+        return json.dumps(self.collections[collection_name])
 
     def wipe(self):
         default = self.collections['default']
         self.collections.clear()
         self.collections['default'] = default
 
-    def get_collections(self):
+    def get_collection_names(self):
         return list(self.collections.keys())
 
 '''
@@ -197,7 +202,7 @@ def exercise01():
     print(box1 == box2)
     print(box1 == box3)
 
-    box4 = box1.combine(box3)
+    box4 = box3.combine(box1)
 
     box5 = box2.double()
 
@@ -208,7 +213,7 @@ def exercise01():
 
     box2.get_hypot()
     
-    return box1
+    return box1, box2, box3, box4, box5, box6
     
 
     # ------ Place code above here /\ /\ /\ ------
@@ -257,7 +262,7 @@ def exercise02():
     db.add_collection('testscores')
 
     test_dict = {}
-    for num in test_scores.length:
+    for num in range(len(test_scores)):
         test_dict[num+1] = test_scores[num]
 
     db.update_collection('testscores', test_dict)
@@ -266,11 +271,11 @@ def exercise02():
 
     db.display_all_collections()
 
-    print(db.collections.default['uuid'])
+    print(db.collections['default']['uuid'])
 
     db.wipe()
 
-    print(db.collections.default['uuid'])
+    print(db.collections['default']['uuid'])
 
 
     # ------ Place code above here /\ /\ /\ ------
@@ -329,7 +334,7 @@ class TestAssignment3(unittest.TestCase):
     def test_exercise02(self):
         print('Testing exercise 2')
         exercise02()
-        db = MangoDB()
+        db = MongoDB()
         self.assertEqual(db.get_collection_size('default'),3)
         self.assertEqual(len(db.get_collection_names()),1)
         self.assertTrue('default' in db.get_collection_names() )
